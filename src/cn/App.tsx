@@ -104,18 +104,18 @@ export function App() {
         : <>{q.fact.a}<em>{q.fact.op}</em>{q.fact.b}<em>=</em><span class="cn-slot">{selected || '?'}</span></>;
     const retry = () => changeSession((s) => ({ ...s, feedback: 'idle', input: '' }));
     const actions = current.feedback === 'wrong'
-      ? <><button class="puffy" onClick={retry}>再试试</button><button class="puffy butter" onClick={() => showHelp(q)}>💡 图解</button></>
+      ? <><button class="puffy" onClick={retry}>再试试</button>{!earlyError && <button class="puffy butter" onClick={() => showHelp(q)}>💡 图解</button>}</>
       : <button class="puffy mint" onClick={next}>{earlyError ? '下一格 →' : current.index === current.questions.length - 1 ? '看结果 →' : '下一题 →'}</button>;
     body = <main class={`cn-shell cn-quiz ${guided ? 'is-guided' : ''}`}>
       <header class="cn-quiz-header"><button class="puffy icon-btn" aria-label="返回首页" onClick={() => setQuit(true)}>✕</button><div class="cn-progress-wrap"><p>{current.review ? '错题练习' : topicName(current.config)}<span>{current.index + 1} / {current.questions.length}</span></p><progress aria-label="练习进度" max={current.questions.length} value={current.index} /></div><Bunny mood={done ? 'happy' : 'normal'} class="cn-progress-bunny" /></header>
       <div class="cn-quiz-layout"><section class="cn-question-side"><div class="cn-question-card"><span class="tape" />
-        <div class="cn-question-heading"><p class="cn-eyebrow">{guided ? methodName(q.practicedMethod!) : { input: '算一算', choice: '选一选', missing: '填一填', compare: '比一比', story: '小故事', steps: '' }[q.kind]}</p><button class="puffy cn-hint" onClick={() => showHelp(q)}>💡 图解</button></div>
+        <div class="cn-question-heading"><p class="cn-eyebrow">{guided ? methodName(q.practicedMethod!) : { input: '算一算', choice: '选一选', missing: '填一填', compare: '比一比', story: '小故事', steps: '' }[q.kind]}</p></div>
         {q.kind === 'story' && <div class="cn-story"><span aria-hidden="true">🐰 🍎</span><p>{story(q.fact)}</p></div>}
         {guided
           ? <Worksheet question={q} active={current.step} input={current.input} values={r.values} reveal={current.feedback === 'answer'} />
           : <h1 class="cn-equation" ref={titleRef} tabIndex={-1} aria-label={questionText(q)}>{equation}</h1>}
         {earlyError && <div class="cn-inline-error" role="status"><b>{current.feedback === 'wrong' ? '再想想这一格' : `这一格填 ${expected(current)}`}</b><div>{actions}</div></div>}
-      </div></section><section class="cn-answer-side" aria-label="答案输入">
+      </div><div class="cn-hint-row"><button class="puffy butter cn-hint" onClick={() => showHelp(q)}>💡 图解</button></div></section><section class="cn-answer-side" aria-label="答案输入">
         {q.kind === 'choice' || q.kind === 'compare'
           ? <div class="cn-choices">{q.choices.map((value) => <button class={`puffy ${selected === value ? 'lilac' : ''}`} key={value} aria-pressed={selected === value} disabled={current.feedback !== 'idle'} onClick={() => setInput(value)}>{value}</button>)}</div>
           : <div class="cn-pad">{['7', '8', '9', '4', '5', '6', '1', '2', '3', 'delete', '0', 'clear'].map((value) => <button class={`puffy ${value.length > 1 ? 'cn-side-key' : ''}`} key={value} aria-label={value === 'delete' ? '退格' : value === 'clear' ? '清空' : value} disabled={current.feedback !== 'idle'} onClick={() => keyInput(value)}>{value === 'delete' ? '⌫' : value === 'clear' ? '清空' : value}</button>)}</div>}
