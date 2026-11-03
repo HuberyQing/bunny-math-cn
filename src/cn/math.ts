@@ -36,7 +36,7 @@ export function worksheet(q: Question) {
   const whole = q.fact[target];
   return {
     target, whole, parts, answers: [...parts, c],
-    prompts: method === 'make10' ? ['先凑成 10', '剩下多少？', '一共多少？'] : method === 'level10' ? ['先减到 10', '还要减几？', '还剩多少？'] : ['拆出一个 10', '还有几个一？', '还剩多少？'],
+    prompts: method === 'make10' ? ['分一分', '再填另一个', '一共多少？'] : method === 'level10' ? ['分一分', '再填另一个', '还剩多少？'] : ['分一分', '再填另一个', '还剩多少？'],
   };
 }
 
@@ -106,18 +106,19 @@ export function generate(config: Config, seed: number): Question[] {
     ? [...Array(config.count === 15 ? 6 : 8).fill('input'), ...Array(config.count === 15 ? 4 : 5).fill('choice'), ...Array(config.count === 15 ? 2 : 3).fill('missing'), 'compare', 'compare', ...Array(config.count === 15 ? 1 : 2).fill('story')]
     : Array(config.count).fill('steps');
   const kinds = config.topic === 'mixed' ? rng.shuffle(quotas) : quotas;
-  return kinds.map((kind, i) => {
+  return kinds.map((requestedKind, i) => {
     const op = config.topic === 'mixed' ? (i % 2 ? '−' : '+') : config.topic === 'make10' ? '+' : '−';
     let candidates = all.filter((f) => f.op === op && !used.has(expression(f)));
     const novel = candidates.filter((f) => !softUsed.has(f.op === '+' ? `${Math.min(f.a, f.b)}+${Math.max(f.a, f.b)}` : expression(f)));
     if (novel.length) candidates = novel;
     const nonzero = candidates.filter((f) => f.a > 0 && f.b > 0 && f.c > 0);
     if (nonzero.length && i % 9 !== 8) candidates = nonzero;
-    if (i < 3) candidates.sort((a, b) => (a.a + a.b) - (b.a + b.b));
     const fact = candidates[0];
     if (!fact) throw new Error('没有符合当前规则的题目');
     used.add(expression(fact));
     softUsed.add(fact.op === '+' ? `${Math.min(fact.a, fact.b)}+${Math.max(fact.a, fact.b)}` : expression(fact));
+    const methods = allowedMethods(fact);
+    const kind: Kind = config.topic === 'mixed' && methods.length ? 'steps' : requestedKind;
     const hidden = rng.chance(0.5) ? 'a' : 'b';
     const than = Math.max(0, Math.min(config.level === 1 && config.topic === 'mixed' ? 10 : 20, fact.c + [-2, 0, 2][i % 3]));
     const answer = kind === 'missing' ? String(fact[hidden]) : kind === 'compare' ? sign(fact.c, than) : String(fact.c);
@@ -125,7 +126,7 @@ export function generate(config: Config, seed: number): Question[] {
     const wrongs = rng.shuffle(Array.from({ length: max + 1 }, (_, n) => n).filter((n) => String(n) !== answer));
     wrongs.sort((a, b) => Math.abs(a - Number(answer)) - Math.abs(b - Number(answer)));
     const choices = kind === 'compare' ? ['＜', '＝', '＞'] : rng.shuffle([answer, ...wrongs.slice(0, 2).map(String)]);
-    const practicedMethod = config.topic === 'mixed' ? undefined : config.topic;
+    const practicedMethod = config.topic === 'mixed' ? (methods.length ? rng.pick(methods) : undefined) : config.topic;
     return { id: `${seed}-${i}`, fact, kind, answer, choices, hidden, than, allowedMethods: allowedMethods(fact), practicedMethod, steps: explain(fact, practicedMethod) };
   });
 }

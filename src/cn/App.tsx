@@ -5,7 +5,7 @@ import { smallBurst, bigParty } from '../lib/celebrate';
 import { STICKERS } from '../lib/storage';
 import { randomSeed } from '../lib/rng';
 import { LEVELS, METHODS, generate, methodName, questionText, story, topicName, type Config, type Fact, type Method, type Question } from './math';
-import { advance, expected, finish, load, newSession, stats, store, submit, type Saved, type Session } from './state';
+import { advance, expected, isCorrect, finish, load, newSession, stats, store, submit, type Saved, type Session } from './state';
 import { Lesson, Modal } from './Lesson';
 import { Worksheet } from './Worksheet';
 import { Feedback } from './Feedback';
@@ -33,8 +33,7 @@ export function App() {
   const changeSession = (fn: (s: Session) => Session) => setView((v) => v.saved.current ? { ...v, saved: { ...v.saved, current: fn(v.saved.current) } } : v);
   const start = (questions?: Question[], selectedConfig?: Config) => {
     setReviewOpen(false);
-    const param = new URLSearchParams(location.search).get('seed');
-    const seed = param !== null && /^\d+$/.test(param) && !questions ? Number(param) >>> 0 : randomSeed();
+    const seed = randomSeed();
     setView((v) => ({ screen: 'quiz', saved: { ...v.saved, current: newSession(selectedConfig ?? v.saved.config, seed, questions) } }));
     sounds.tap();
   };
@@ -57,7 +56,7 @@ export function App() {
   });
   const check = () => {
     if (!current || current.feedback !== 'idle' || !current.input) return;
-    const correct = current.input === expected(current);
+    const correct = isCorrect(current);
     changeSession(submit);
     if (correct) { if (current.questions[current.index].kind === 'steps' && current.step < 2) sounds.tap(); else { sounds.right(); smallBurst(); } } else sounds.wrong();
   };

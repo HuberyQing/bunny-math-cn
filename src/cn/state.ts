@@ -15,14 +15,21 @@ export function newSession(config: Config, seed: number, questions?: Question[])
 }
 export function expected(s: Session) {
   const q = s.questions[s.index];
-  return q.kind === 'steps' ? String(worksheet(q).answers[s.step]) : q.answer;
+  if (q.kind !== 'steps') return q.answer;
+  const w = worksheet(q);
+  return String(s.step === 1 ? w.whole - Number(s.records[s.index].values[0]) : w.answers[s.step]);
+}
+export function isCorrect(s: Session): boolean {
+  const q = s.questions[s.index];
+  if (q.kind === 'steps' && s.step === 0) return worksheet(q).parts.includes(Number(s.input));
+  return s.input === expected(s);
 }
 export function submit(s: Session): Session {
   if (s.finished || s.feedback !== 'idle' || !s.input) return s;
   const result = structuredClone(s), r = result.records[s.index];
   r.attempts++;
   r.firstValues[s.step] ??= s.input;
-  if (s.input === expected(s)) {
+  if (isCorrect(s)) {
     r.values[s.step] = s.input;
     if (s.questions[s.index].kind === 'steps' && s.step < 2) {
       result.step++;

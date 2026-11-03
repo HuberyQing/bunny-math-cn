@@ -658,3 +658,15 @@ h1:focus { outline: none; }
   .cn-hint-row .cn-hint { min-height: 48px; padding-top: 6px; padding-bottom: 6px; }
   .cn-story > span { display: none; }
 }
+
+/* Printable questions use one column; decomposition trees never compete for width. */
+.cn-print-questions, .cn-print-questions.guided { grid-template-columns: minmax(0, 1fr); }
+.cn-print-questions > li { min-width: 0; overflow-wrap: anywhere; }
+.cn-print-questions b { font-size: 18px; }
+.cn-print-example p { overflow-wrap: anywhere; }
+.cn-print-questions .cn-worksheet.is-printing { max-width: 370px; margin: 0 auto; }
+@media print {
+  .cn-print-questions, .cn-print-questions.guided { grid-template-columns: minmax(0, 1fr); gap: 5mm; }
+  .cn-print-questions b { font-size: 12pt; }
+  .cn-print-questions p { font-size: 10pt; }
+}
