@@ -129,6 +129,16 @@ h1:focus { outline: none; }
 .cn-branches { white-space: pre; letter-spacing: 12px; padding-left: 10px; font-size: 24px; }
 .cn-split > div { display: flex; justify-content: space-between; min-width: 100px; }
 .cn-split > div b { min-width: 35px; border-radius: 8px; border: 2px solid #b9a2cd; background: white; padding: 2px; }
+.cn-split > b, .cn-split > div > b {
+  display: grid;
+  place-items: center;
+  min-width: 42px;
+  height: 40px;
+  padding: 0 4px;
+  text-align: center;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
 
 /* Native dialog provides focus containment, Escape and focus restoration. */
 .cn-dialog { width: min(520px, calc(100vw - 28px)); max-height: calc(100dvh - 28px); overflow: auto; margin: auto; padding: 22px; color: var(--ink); background: #fffdfd; border: 3px solid var(--ink); border-radius: 27px; box-shadow: 0 9px 0 #4b2a5c33; }
