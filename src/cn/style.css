@@ -401,3 +401,253 @@ h1:focus { outline: none; }
   .cn-signature { right: max(12px, env(safe-area-inset-right)); font-size: 12px; }
 }
 @media print { .cn-signature { display: none !important; } }
+
+/* Compact child-facing home: only a mascot, choices and Start. */
+.cn-simple-shell { height: 100dvh; min-height: 0; display: flex; flex-direction: column; overflow: hidden; padding-top: 16px; padding-bottom: 34px; }
+.cn-simple-shell .cn-topbar { flex: none; min-height: 48px; padding-bottom: 8px; }
+.cn-home-simple { display: flex; flex: 1; min-height: 0; flex-direction: column; justify-content: center; gap: 20px; width: min(850px, 100%); margin: auto; padding: 12px 0; }
+.cn-home-intro { display: flex; align-items: center; justify-content: center; gap: 18px; flex: none; }
+.cn-home-intro .bunny { width: 78px; height: 86px; }
+.cn-home-intro h1 { font-size: 38px; font-weight: 850; letter-spacing: 4px; }
+.cn-home-intro h1 span { display: inline-block; color: #d53b79; transform: rotate(3deg); }
+.cn-home-simple .cn-practice-card { width: 100%; max-width: none; gap: 16px; padding: 24px; }
+.cn-home-simple .cn-pick-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.cn-home-simple .cn-pick { min-height: 112px; padding: 14px; gap: 10px; }
+.cn-home-simple .cn-pick > span:nth-child(2) { min-width: 0; }
+.cn-home-simple .cn-pick b { font-size: 16px; line-height: 1.5; }
+.cn-home-simple .cn-pick small { font-size: 15px; }
+.cn-home-simple .cn-pick-icon { font-size: 29px; width: 34px; }
+.cn-simple-actions { display: grid; grid-template-columns: 1fr 1.3fr; gap: 24px; align-items: center; }
+.cn-simple-actions .cn-count-picker { justify-content: flex-start; gap: 14px; }
+.cn-simple-actions .cn-start { min-height: 58px; font-size: 23px; }
+.cn-home-extras { display: flex; align-items: center; justify-content: center; gap: 24px; }
+.cn-home-extras .cn-text-button { min-height: 34px; font-size: 13px; }
+
+/* The complete decomposition remains visible while the arrow moves between blanks. */
+.cn-worksheet { --work-size: 55px; width: 100%; padding-top: 20px; }
+.cn-work-equation { display: grid; grid-template-columns: minmax(100px, 1fr) 30px minmax(100px, 1fr) 30px 65px; align-items: start; gap: 6px; font-family: "Baloo 2", "PingFang SC", sans-serif; font-size: 50px; font-weight: 800; line-height: 1.2; text-align: center; }
+.cn-work-operand { min-width: 0; position: relative; }
+.cn-work-number { display: grid; place-items: center; height: var(--work-size); }
+.cn-work-op { display: grid; place-items: center; height: var(--work-size); color: #cf3a79; }
+.cn-work-result { min-width: 0; display: flex; justify-content: center; }
+.cn-work-split { width: 132px; max-width: 100%; margin: 0 auto; }
+.cn-work-split > svg { display: block; width: 100%; height: 32px; overflow: visible; }
+.cn-work-split > svg path { stroke: var(--ink); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.cn-work-split > div { display: flex; justify-content: space-between; gap: 10px; }
+.cn-work-slot { display: inline-grid; place-items: center; flex: none; position: relative; width: var(--work-size); height: var(--work-size); border: 3px dashed #c4b1de; border-radius: 13px; background: #f4eefd; font-size: 34px; color: #b19ac2; }
+.cn-work-slot.active { background: var(--butter-soft); border-style: solid; border-color: #e8983e; box-shadow: 0 0 0 4px #ffe5b34a; color: var(--ink); }
+.cn-work-slot.filled { background: var(--mint-soft); border-style: solid; border-color: #53a98a; color: var(--ink); }
+.cn-work-arrow { position: absolute; top: -28px; left: 50%; transform: translateX(-50%); font-size: 29px; color: #d13e7a; line-height: 1; text-shadow: 0 1px #fff; }
+.cn-work-value { line-height: 1; }
+.cn-work-prompt { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 20px; font-size: 16px; font-weight: 700; color: #86628f; }
+.cn-work-prompt small { font-size: 12px; color: #a58bad; }
+.cn-question-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px; }
+.cn-question-heading .cn-eyebrow { font-size: 14px; letter-spacing: 0; }
+.cn-question-heading .cn-hint { min-height: 42px; font-size: 13px; padding: 4px 12px; }
+.cn-progress-bunny { width: 49px; height: 54px; flex: none; }
+.cn-quiz { height: 100dvh; min-height: 0; display: flex; flex-direction: column; padding-top: 16px; padding-bottom: 34px; overflow: hidden; }
+.cn-quiz-header { flex: none; }
+.cn-quiz-layout { flex: 1; min-height: 0; padding: 18px 5px 8px; }
+.cn-question-card { padding: 20px 18px; }
+.cn-question-side { min-height: 0; }
+.cn-answer-side { min-height: 0; }
+.cn-inline-error { position: absolute; z-index: 2; bottom: 10px; left: 10px; right: 10px; padding: 12px; border: 2px solid var(--ink); border-radius: 16px; background: var(--butter-soft); box-shadow: 0 3px #ead4b6; }
+.cn-inline-error > b { display: block; font-size: 15px; margin-bottom: 8px; }
+.cn-inline-error > div { display: flex; gap: 10px; justify-content: center; }
+.cn-inline-error .puffy { min-height: 44px; padding: 4px 18px; font-size: 14px; border-width: 2px; }
+
+/* Each completed answer opens a true bottom sheet in the current viewport. */
+.cn-feedback-sheet { position: fixed; inset: auto 0 0; margin: 0; width: 100%; max-width: none; max-height: min(50dvh, 280px); overflow-y: auto; border: 3px solid var(--ink); border-bottom: 0; border-radius: 25px 25px 0 0; padding: 20px max(22px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left)); color: var(--ink); animation: cn-feedback-rise .22s ease-out; }
+.cn-feedback-sheet::backdrop { background: rgb(75 42 92 / 16%); }
+.cn-feedback-sheet.good { background: var(--mint-soft); }
+.cn-feedback-sheet.bad { background: var(--butter-soft); }
+.cn-feedback-inner { max-width: 1050px; margin: auto; display: flex; align-items: center; gap: 22px; }
+.cn-feedback-inner > .bunny { width: 65px; height: 72px; flex: none; }
+.cn-feedback-copy { flex: 1; min-width: 0; }
+.cn-feedback-copy h2 { font-size: 25px; }
+.cn-feedback-copy p { font-size: 14px; margin-top: 3px; }
+.cn-feedback-copy p:empty { display: none; }
+.cn-feedback-actions { display: flex; gap: 12px; }
+.cn-feedback-actions .puffy { min-height: 54px; padding: 10px 26px; font-size: 18px; }
+@keyframes cn-feedback-rise { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+@media (max-width: 1000px) {
+  .cn-work-equation { grid-template-columns: minmax(90px, 1fr) 20px minmax(90px, 1fr) 20px 56px; gap: 3px; font-size: 43px; }
+  .cn-worksheet { --work-size: 48px; }
+  .cn-work-slot { font-size: 30px; }
+}
+@media (max-width: 750px) {
+  .cn-simple-shell { padding: 12px 16px 32px; }
+  .cn-simple-shell .cn-topbar { min-height: 48px; padding-bottom: 6px; }
+  .cn-home-simple { gap: 12px; padding: 8px 0; justify-content: center; }
+  .cn-home-intro { gap: 15px; }
+  .cn-home-intro .bunny { width: 55px; height: 60px; }
+  .cn-home-intro h1 { font-size: 29px; }
+  .cn-home-simple .cn-practice-card { gap: 12px; padding: 17px; }
+  .cn-home-simple .cn-tabs { padding: 4px; }
+  .cn-home-simple .cn-tabs button { min-height: 44px; font-size: 14px; }
+  .cn-home-simple .cn-pick-list { grid-template-columns: 1fr; gap: 9px; }
+  .cn-home-simple .cn-pick { min-height: 57px; padding: 8px 12px; gap: 12px; }
+  .cn-home-simple .cn-pick > span:nth-child(2) { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 6px; padding-right: 25px; }
+  .cn-home-simple .cn-pick b { font-size: 15px; }
+  .cn-home-simple .cn-pick small { font-size: 13px; }
+  .cn-home-simple .cn-pick i { top: 18px; }
+  .cn-home-simple .cn-pick-icon { font-size: 26px; width: 30px; }
+  .cn-simple-actions { gap: 14px; grid-template-columns: 1fr 1.1fr; }
+  .cn-simple-actions .cn-count-picker { flex-direction: column; align-items: flex-start; gap: 2px; font-size: 12px; }
+  .cn-simple-actions .cn-count-picker .seg button { min-height: 40px; padding: 3px 13px; font-size: 15px; }
+  .cn-simple-actions .cn-start { min-height: 54px; font-size: 21px; }
+  .cn-home-extras { gap: 12px; }
+  .cn-home-extras .cn-text-button { min-height: 30px; font-size: 12px; }
+  .cn-quiz { padding: 12px 16px 30px; }
+  .cn-quiz-layout { display: flex; flex-direction: column; gap: 10px; min-height: 0; padding: 10px 0 0; }
+  .cn-question-side { display: flex; flex: 1; align-items: center; justify-content: center; width: 100%; }
+  .cn-question-card { width: 100%; padding: 13px 15px; }
+  .cn-question-heading { margin-bottom: 4px; }
+  .cn-question-heading .cn-hint { min-height: 38px; padding: 3px 10px; font-size: 12px; }
+  .cn-question-heading .cn-eyebrow { font-size: 13px; }
+  .cn-equation { font-size: clamp(34px, 10vw, 50px); padding: 16px 0; }
+  .cn-answer-side { flex: none; width: 100%; gap: 10px; }
+  .cn-pad { gap: 8px; }
+  .cn-pad button { height: clamp(42px, 6.4dvh, 54px); font-size: 28px; border-radius: 13px; --press: 4px; }
+  .cn-submit { min-height: 48px; padding: 6px; font-size: 19px; --press: 4px; }
+  .cn-work-equation { grid-template-columns: minmax(82px, 1fr) 20px minmax(82px, 1fr) 20px 46px; gap: 3px; font-size: 38px; }
+  .cn-worksheet { --work-size: 43px; padding-top: 18px; }
+  .cn-work-slot { border-width: 2px; font-size: 27px; border-radius: 10px; }
+  .cn-work-split > div { gap: 7px; }
+  .cn-work-split > svg { height: 29px; }
+  .cn-work-prompt { margin-top: 12px; font-size: 14px; }
+  .cn-story { font-size: 16px; padding-top: 4px; }
+  .cn-story > span { font-size: 28px; }
+  .cn-progress-bunny { width: 39px; height: 43px; }
+  .cn-feedback-sheet { padding: 14px 18px max(20px, env(safe-area-inset-bottom)); }
+  .cn-feedback-inner { gap: 12px; flex-wrap: wrap; }
+  .cn-feedback-inner > .bunny { width: 43px; height: 48px; }
+  .cn-feedback-copy h2 { font-size: 22px; }
+  .cn-feedback-copy p { font-size: 12px; }
+  .cn-feedback-actions { flex-basis: 100%; width: 100%; gap: 12px; }
+  .cn-feedback-actions .puffy { flex: 1; min-height: 48px; padding: 8px 14px; font-size: 17px; }
+}
+@media (max-width: 750px) and (max-height: 650px) {
+  .cn-home-simple { gap: 8px; padding: 4px 0; }
+  .cn-home-intro .bunny { width: 43px; height: 48px; }
+  .cn-home-intro h1 { font-size: 27px; }
+  .cn-home-simple .cn-practice-card { padding: 13px; gap: 9px; }
+  .cn-home-simple .cn-pick { min-height: 51px; padding: 6px 10px; }
+  .cn-home-simple .cn-pick-list { gap: 8px; }
+  .cn-home-simple .cn-pick i { top: 14px; }
+  .cn-home-simple .cn-pick b { font-size: 13px; }
+  .cn-home-simple .cn-pick small { font-size: 12px; }
+  .cn-quiz { padding: 8px 12px 26px; }
+  .cn-quiz-header .icon-btn { width: 42px; height: 42px; }
+  .cn-quiz-layout { padding-top: 6px; gap: 8px; }
+  .cn-question-card { padding: 8px 10px; }
+  .cn-question-heading .cn-hint { min-height: 34px; }
+  .cn-work-equation { grid-template-columns: minmax(73px, 1fr) 16px minmax(73px, 1fr) 16px 40px; font-size: 32px; gap: 2px; }
+  .cn-worksheet { --work-size: 36px; padding-top: 16px; }
+  .cn-work-slot { font-size: 24px; border-radius: 8px; }
+  .cn-work-split > svg { height: 23px; }
+  .cn-work-split > div { gap: 4px; }
+  .cn-work-arrow { top: -25px; font-size: 25px; }
+  .cn-work-prompt { margin-top: 8px; font-size: 12px; }
+  .cn-work-prompt small { font-size: 10px; }
+  .cn-answer-side { gap: 8px; }
+  .cn-pad { gap: 6px; }
+  .cn-pad button { height: 40px; font-size: 25px; }
+  .cn-submit { min-height: 44px; }
+}
+@media (min-width: 600px) and (max-height: 500px) {
+  .cn-simple-shell { padding: 8px 18px 25px; }
+  .cn-simple-shell .cn-topbar { min-height: 44px; padding-bottom: 4px; }
+  .cn-home-simple { padding: 4px 0; gap: 0; }
+  .cn-home-intro { display: none; }
+  .cn-home-simple .cn-practice-card { padding: 12px 16px; gap: 8px; }
+  .cn-home-simple .cn-pick-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .cn-home-simple .cn-pick { min-height: 70px; padding: 8px; gap: 4px; }
+  .cn-home-simple .cn-pick > span:nth-child(2) { flex-direction: column; align-items: flex-start; padding-right: 8px; }
+  .cn-home-simple .cn-pick b { font-size: 12px; }
+  .cn-home-simple .cn-pick small { font-size: 12px; }
+  .cn-home-simple .cn-pick-icon { font-size: 22px; width: 26px; }
+  .cn-home-simple .cn-pick i { right: 7px; top: 8px; width: 14px; height: 14px; line-height: 10px; font-size: 9px; }
+  .cn-simple-actions .cn-count-picker { flex-direction: row; align-items: center; }
+  .cn-simple-actions .cn-start { min-height: 45px; font-size: 19px; }
+  .cn-quiz { padding: 8px 16px 24px; }
+  .cn-quiz-header { gap: 12px; }
+  .cn-quiz-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(220px, 1fr); align-items: center; padding: 8px 0 0; gap: 20px; }
+  .cn-question-card { padding: 10px 12px; }
+  .cn-work-equation { grid-template-columns: minmax(68px, 1fr) 15px minmax(68px, 1fr) 15px 38px; gap: 2px; font-size: 30px; }
+  .cn-worksheet { --work-size: 33px; padding-top: 16px; }
+  .cn-work-slot { font-size: 23px; }
+  .cn-work-split > svg { height: 24px; }
+  .cn-work-prompt { font-size: 12px; margin-top: 10px; }
+  .cn-pad { gap: 6px; }
+  .cn-pad button { height: 40px; font-size: 24px; }
+  .cn-answer-side { gap: 10px; }
+  .cn-submit { min-height: 44px; }
+  .cn-equation { font-size: 39px; padding: 12px 0; }
+  .cn-feedback-inner { flex-wrap: nowrap; }
+  .cn-feedback-actions { flex-basis: auto; width: auto; }
+  .cn-feedback-copy h2 { font-size: 20px; }
+  .cn-feedback-inner > .bunny { display: none; }
+}
+.cn-worksheet.is-printing { --work-size: 29px; padding: 6px 0; }
+.is-printing .cn-work-equation { grid-template-columns: minmax(55px, 1fr) 15px minmax(55px, 1fr) 15px 34px; font-size: 24px; gap: 2px; }
+.is-printing .cn-work-slot { font-size: 20px; border-width: 1px; border-style: solid; border-color: #555; background: white; color: black; border-radius: 5px; }
+.is-printing .cn-work-split > svg { height: 20px; }
+.is-printing .cn-work-split > div { gap: 3px; }
+@media (prefers-reduced-motion: reduce) { .cn-feedback-sheet { animation: none; } }
+.cn-home-simple .cn-practice-card { margin: 0; }
+.cn-question-card:has(.cn-inline-error) .cn-question-heading .cn-hint { visibility: hidden; }
+/* The result summary fits one screen; the full question list opens on demand. */
+.cn-results-shell { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; padding-top: 16px; padding-bottom: 34px; }
+.cn-results-shell .cn-topbar { flex: none; }
+.cn-results-shell .cn-results { flex: 1; min-height: 0; width: min(900px, 100%); padding: 12px 0; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.cn-results-shell .cn-result-hero { gap: 20px; flex-wrap: nowrap; }
+.cn-results-shell .cn-result-hero > .bunny { width: 80px; flex: none; }
+.cn-results-shell .cn-result-hero h1 { margin: 0 0 6px; font-size: 30px; }
+.cn-results-shell .cn-result-stars svg { width: 44px; height: 44px; }
+.cn-results-shell .cn-reward { padding: 6px 14px; transform: rotate(3deg); }
+.cn-results-shell .cn-reward > span { font-size: 42px; }
+.cn-results-shell .cn-stats { margin: 0; gap: 12px; }
+.cn-results-shell .cn-stats > div { padding: 12px; }
+.cn-results-shell .cn-stats strong { font-size: 34px; }
+.cn-results-shell .cn-summary-note { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; padding: 10px; font-size: 13px; }
+.cn-results-shell .cn-skill-grid { margin: 0; flex-direction: row; gap: 12px; }
+.cn-results-shell .cn-skill-grid > div { padding: 9px 14px; justify-content: center; }
+.cn-results-shell .cn-result-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0; gap: 12px; }
+.cn-results-shell .cn-result-actions .puffy { min-height: 50px; }
+@media (max-width: 750px) {
+  .cn-results-shell { padding: 12px 16px 32px; }
+  .cn-results-shell .cn-results { gap: 12px; padding: 8px 0; }
+  .cn-results-shell .cn-result-hero { gap: 12px; }
+  .cn-results-shell .cn-result-hero > .bunny { width: 48px; }
+  .cn-results-shell .cn-result-hero h1 { font-size: 26px; }
+  .cn-results-shell .cn-result-stars { gap: 4px; }
+  .cn-results-shell .cn-result-stars svg { width: 32px; height: 32px; }
+  .cn-results-shell .cn-reward { padding: 4px 10px; }
+  .cn-results-shell .cn-reward > span { font-size: 32px; }
+  .cn-results-shell .cn-stats { gap: 8px; }
+  .cn-results-shell .cn-stats > div { padding: 9px 3px; }
+  .cn-results-shell .cn-stats strong { font-size: 29px; }
+  .cn-results-shell .cn-stats strong small { font-size: 13px; }
+  .cn-results-shell .cn-stats span { font-size: 11px; }
+  .cn-results-shell .cn-summary-note { gap: 8px; padding: 8px 5px; font-size: 12px; }
+  .cn-results-shell .cn-skill-grid > div { padding: 6px; font-size: 13px; }
+  .cn-results-shell .cn-result-actions { gap: 10px; }
+  .cn-results-shell .cn-result-actions .puffy { min-height: 46px; padding: 6px 10px; }
+}
+@media (min-width: 600px) and (max-height: 500px) {
+  .cn-results-shell { padding: 8px 18px 24px; }
+  .cn-results-shell .cn-topbar { padding-bottom: 4px; }
+  .cn-results-shell .cn-results { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; align-content: center; padding: 4px 0; }
+  .cn-results-shell .cn-result-hero { grid-column: 1; grid-row: 1 / span 2; }
+  .cn-results-shell .cn-result-hero > .bunny { display: none; }
+  .cn-results-shell .cn-result-hero h1 { font-size: 23px; }
+  .cn-results-shell .cn-stats { grid-column: 2; grid-row: 1; gap: 6px; }
+  .cn-results-shell .cn-stats strong { font-size: 25px; }
+  .cn-results-shell .cn-stats > div { padding: 5px 3px; }
+  .cn-results-shell .cn-summary-note { grid-column: 2; grid-row: 2; padding: 5px; font-size: 11px; }
+  .cn-results-shell .cn-skill-grid { grid-column: 1; grid-row: 3; }
+  .cn-results-shell .cn-result-actions { grid-column: 2; grid-row: 3 / span 2; gap: 8px; }
+  .cn-results-shell .cn-result-actions .puffy { min-height: 42px; font-size: 12px; }
+}

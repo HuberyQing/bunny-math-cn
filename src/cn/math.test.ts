@@ -30,9 +30,9 @@ describe('低年级出题范围、配额和随机复现', () => {
         expect(qs.filter((q) => q.kind === 'compare')).toHaveLength(2);
         expect(qs.filter((q) => q.kind === 'story')).toHaveLength(config.count === 15 ? 1 : 2);
       } else {
-        expect(qs.filter((q) => q.kind === 'steps')).toHaveLength(config.count === 15 ? 6 : 8);
-        expect(qs.filter((q) => q.kind === 'input')).toHaveLength(config.count === 15 ? 6 : 8);
-        expect(qs.filter((q) => q.kind === 'choice')).toHaveLength(config.count === 15 ? 3 : 4);
+        expect(qs.filter((q) => q.kind === 'steps')).toHaveLength(config.count);
+        expect(qs.filter((q) => q.kind === 'input')).toHaveLength(0);
+        expect(qs.filter((q) => q.kind === 'choice')).toHaveLength(0);
       }
     }
   });
@@ -86,7 +86,7 @@ describe('作答、订正、恢复和奖励', () => {
       expect(submit(checked)).toEqual(checked);
       s = advance(checked); submitted++;
     }
-    expect(submitted).toBe(6 * 3 + 9);
+    expect(submitted).toBe(15 * 3);
     expect(stats(s)).toEqual({ right: 15, total: 15, helped: 0, corrected: 0, stars: 3 });
     expect(advance(s)).toEqual(s);
   });
@@ -121,14 +121,14 @@ describe('作答、订正、恢复和奖励', () => {
     expect(again).toEqual(saved);
     expect(saved.stickers).toHaveLength(1);
   });
-  it('本机保存能恢复题内步骤、首次答案和反馈；损坏/禁用存储仍可用', () => {
+  it('本机保留设置，但不恢复未完成练习；损坏/禁用存储仍可用', () => {
     const memory = new Map<string, string>();
     const original = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
     Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: { getItem: (k: string) => memory.get(k) ?? null, setItem: (k: string, v: string) => memory.set(k, v) } });
     try {
       let s = newSession(config, 2); s.input = expected(s); s = advance(submit(s));
       const saved = { ...defaults(), config, current: s }; store(saved);
-      expect(load()).toEqual(saved);
+      expect(load()).toEqual({ ...saved, current: undefined });
       const broken = structuredClone(saved);
       broken.current!.questions[0].steps[0] = null as never;
       memory.set('bunny-math-cn:v2', JSON.stringify(broken));

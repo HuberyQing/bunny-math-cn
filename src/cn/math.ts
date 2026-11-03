@@ -25,6 +25,21 @@ export const topicName = (c: Config) => c.topic === 'mixed' ? LEVELS[c.level - 1
 export const expression = (f: Fact) => `${f.a} ${f.op} ${f.b}`;
 export const sign = (a: number, b: number) => a < b ? '＜' : a > b ? '＞' : '＝';
 
+/** The two decomposition blanks and final answer stay together on one worksheet. */
+export function worksheet(q: Question) {
+  const { a, b, c } = q.fact;
+  const method = q.practicedMethod!;
+  const target = method === 'level10' ? 'b' : method === 'break10' ? 'a' : a <= b ? 'a' : 'b';
+  const parts: [number, number] = method === 'make10'
+    ? [10 - Math.max(a, b), Math.min(a, b) - (10 - Math.max(a, b))]
+    : method === 'level10' ? [a - 10, b - (a - 10)] : [10, a - 10];
+  const whole = q.fact[target];
+  return {
+    target, whole, parts, answers: [...parts, c],
+    prompts: method === 'make10' ? ['先凑成 10', '剩下多少？', '一共多少？'] : method === 'level10' ? ['先减到 10', '还要减几？', '还剩多少？'] : ['拆出一个 10', '还有几个一？', '还剩多少？'],
+  };
+}
+
 export function allowedMethods(f: Fact): Method[] {
   if (f.op === '+' && f.a > 0 && f.a < 10 && f.b > 0 && f.b < 10 && f.c > 10) return ['make10'];
   if (f.op === '−' && f.a > 10 && f.a < 20 && f.b > f.a - 10 && f.b < 10) return ['level10', 'break10'];
@@ -89,7 +104,7 @@ export function generate(config: Config, seed: number): Question[] {
   const softUsed = new Set<string>();
   const quotas: Kind[] = config.topic === 'mixed'
     ? [...Array(config.count === 15 ? 6 : 8).fill('input'), ...Array(config.count === 15 ? 4 : 5).fill('choice'), ...Array(config.count === 15 ? 2 : 3).fill('missing'), 'compare', 'compare', ...Array(config.count === 15 ? 1 : 2).fill('story')]
-    : [...Array(config.count === 15 ? 6 : 8).fill('steps'), ...Array(config.count === 15 ? 6 : 8).fill('input'), ...Array(config.count === 15 ? 3 : 4).fill('choice')];
+    : Array(config.count).fill('steps');
   const kinds = config.topic === 'mixed' ? rng.shuffle(quotas) : quotas;
   return kinds.map((kind, i) => {
     const op = config.topic === 'mixed' ? (i % 2 ? '−' : '+') : config.topic === 'make10' ? '+' : '−';

@@ -1,5 +1,5 @@
 import type { Config, Question } from './math';
-import { generate } from './math';
+import { generate, worksheet } from './math';
 import { STICKERS } from '../lib/storage';
 
 export type Attempt = { firstCorrect: boolean | null; helped: boolean; attempts: number; errors: number[]; values: string[]; firstValues: string[]; revealed: boolean; completed: boolean; solved: boolean };
@@ -15,7 +15,7 @@ export function newSession(config: Config, seed: number, questions?: Question[])
 }
 export function expected(s: Session) {
   const q = s.questions[s.index];
-  return q.kind === 'steps' ? String(q.steps[s.step].answer) : q.answer;
+  return q.kind === 'steps' ? String(worksheet(q).answers[s.step]) : q.answer;
 }
 export function submit(s: Session): Session {
   if (s.finished || s.feedback !== 'idle' || !s.input) return s;
@@ -24,7 +24,10 @@ export function submit(s: Session): Session {
   r.firstValues[s.step] ??= s.input;
   if (s.input === expected(s)) {
     r.values[s.step] = s.input;
-    result.feedback = 'correct';
+    if (s.questions[s.index].kind === 'steps' && s.step < 2) {
+      result.step++;
+      result.input = '';
+    } else result.feedback = 'correct';
   } else {
     r.firstCorrect = false;
     r.errors[s.step] = (r.errors[s.step] ?? 0) + 1;
@@ -63,7 +66,7 @@ export function finish(saved: Saved, s: Session): Saved {
   return { ...saved, current: undefined, ...(s.review ? { lastReview: last } : { last, lastReview: undefined }), stickers: !already && sticker ? [...saved.stickers, sticker] : saved.stickers, awarded: already ? saved.awarded : [...saved.awarded, s.id].slice(-100) };
 }
 export function store(saved: Saved) {
-  try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch { /* Practice remains available in memory. */ }
+  try { localStorage.setItem(KEY, JSON.stringify({ ...saved, current: undefined })); } catch { /* Settings remain available in memory. */ }
 }
 function validSession(s: unknown): s is Session {
   if (!s || typeof s !== 'object') return false;
@@ -88,6 +91,6 @@ export function load(): Saved {
     const x = JSON.parse(localStorage.getItem(KEY) ?? 'null') as Saved;
     if (!x || x.version !== 2 || !validConfig(x.config)) return defaults();
     const d = defaults();
-    return { ...d, config: x.config, sound: x.sound === true, stickers: Array.isArray(x.stickers) ? [...new Set(x.stickers.filter((s) => (STICKERS as readonly string[]).includes(s)))] : [], awarded: Array.isArray(x.awarded) ? x.awarded.filter((s) => typeof s === 'string').slice(-100) : [], current: validSession(x.current) ? x.current : undefined, last: validSession(x.last) && x.last.finished ? x.last : undefined, lastReview: validSession(x.lastReview) && x.lastReview.finished ? x.lastReview : undefined };
+    return { ...d, config: x.config, sound: x.sound === true, stickers: Array.isArray(x.stickers) ? [...new Set(x.stickers.filter((s) => (STICKERS as readonly string[]).includes(s)))] : [], awarded: Array.isArray(x.awarded) ? x.awarded.filter((s) => typeof s === 'string').slice(-100) : [], current: undefined, last: validSession(x.last) && x.last.finished ? x.last : undefined, lastReview: validSession(x.lastReview) && x.lastReview.finished ? x.lastReview : undefined };
   } catch { return defaults(); }
 }
